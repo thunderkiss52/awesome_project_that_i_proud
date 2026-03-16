@@ -8,6 +8,7 @@ The project demonstrates:
 - booking CRUD with ownership rules
 - subscription limits (`basic` and `premium`)
 - Laravel events and listeners
+- activity feed from booking events
 - rate limiting and consistent API errors
 - Vue SPA with Pinia, Vue Router and Axios
 - Docker-based local setup
@@ -141,6 +142,7 @@ Bookings:
 - `POST /api/bookings`
 - `PUT /api/bookings/{id}`
 - `DELETE /api/bookings/{id}`
+- `GET /api/activity`
 
 Subscription:
 

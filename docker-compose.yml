@@ -31,6 +31,8 @@ services:
     environment:
       APP_ENV: local
       APP_DEBUG: "true"
+      LOG_CHANNEL: stderr
+      LOG_LEVEL: debug
       DB_CONNECTION: mysql
       DB_HOST: db
       DB_PORT: 3306
@@ -40,15 +42,7 @@ services:
       FRONTEND_URL: http://localhost:${FRONTEND_PORT:-5173}
     volumes:
       - ./backend:/var/www/html
-    command: >
-      sh -lc "
-      if [ ! -f .env ]; then cp .env.example .env; fi &&
-      composer install &&
-      php artisan key:generate --force &&
-      php artisan jwt:secret --force &&
-      php artisan migrate --seed --force &&
-      php-fpm
-      "
+    command: ["/usr/local/bin/start-backend"]
 
   nginx:
     image: nginx:1.27-alpine

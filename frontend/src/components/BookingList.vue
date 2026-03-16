@@ -16,50 +16,55 @@ defineProps({
   },
 })
 
-const emit = defineEmits(['edit', 'cancel'])
+const emit = defineEmits(['edit', 'cancel', 'select'])
+
+function statusLabel(status) {
+  return status === 'cancelled' ? 'Отменена' : 'Активна'
+}
 </script>
 
 <template>
   <section class="panel">
     <div class="panel__header">
       <div>
-        <p class="eyebrow">Meetings</p>
-        <h3>Your bookings</h3>
+        <p class="eyebrow">Лента встреч</p>
+        <h3>Ваши бронирования</h3>
       </div>
-      <span class="chip">{{ bookings.length }} total</span>
+      <span class="chip">{{ bookings.length }} всего</span>
     </div>
 
     <div v-if="loading" class="empty-state">
-      Loading bookings...
+      Загружаем встречи...
     </div>
 
     <div v-else-if="!bookings.length" class="empty-state">
-      <h4>No meetings yet</h4>
-      <p>Create your first booking to see it here.</p>
+      <h4>Пока пусто</h4>
+      <p>Создайте первую встречу, и она появится в этой ленте.</p>
     </div>
 
-    <div v-else class="booking-grid">
-      <article class="booking-card" v-for="booking in bookings" :key="booking.id">
+    <div v-else class="booking-list">
+      <article class="booking-card" v-for="booking in bookings" :key="booking.id" @click="emit('select', booking)">
         <div class="booking-card__head">
           <div>
             <span class="chip" :class="booking.status === 'cancelled' ? 'chip--muted' : 'chip--active'">
-              {{ booking.status }}
+              {{ statusLabel(booking.status) }}
             </span>
             <h4>{{ booking.title }}</h4>
           </div>
+          <div class="booking-card__id">#{{ booking.id }}</div>
         </div>
 
         <p class="booking-card__description">
-          {{ booking.description || 'No description provided.' }}
+          {{ booking.description || 'Описание не указано.' }}
         </p>
 
         <dl class="booking-card__meta">
           <div>
-            <dt>Start</dt>
+            <dt>Начало</dt>
             <dd>{{ formatDateTime(booking.starts_at) }}</dd>
           </div>
           <div>
-            <dt>End</dt>
+            <dt>Окончание</dt>
             <dd>{{ formatDateTime(booking.ends_at) }}</dd>
           </div>
         </dl>
@@ -69,17 +74,17 @@ const emit = defineEmits(['edit', 'cancel'])
             class="ghost-button"
             type="button"
             :disabled="booking.status === 'cancelled' || saving"
-            @click="emit('edit', booking)"
+            @click.stop="emit('edit', booking)"
           >
-            Edit
+            Изменить
           </button>
           <button
             class="danger-button"
             type="button"
             :disabled="booking.status === 'cancelled' || saving"
-            @click="emit('cancel', booking)"
+            @click.stop="emit('cancel', booking)"
           >
-            Cancel
+            Отменить
           </button>
         </div>
       </article>

@@ -11,5 +11,8 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
+COPY docker/backend/start-backend /usr/local/bin/start-backend
+
+RUN chmod +x /usr/local/bin/start-backend
 
 WORKDIR /var/www/html

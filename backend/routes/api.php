@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\ActivityFeedController;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\SubscriptionController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,7 @@ Route::middleware('throttle:api')->group(function () {
 
     Route::middleware('auth:api')->group(function () {
         Route::get('/subscription', [SubscriptionController::class, 'show']);
+        Route::get('/activity', [ActivityFeedController::class, 'index']);
 
         Route::get('/bookings', [BookingController::class, 'index']);
         Route::get('/bookings/{id}', [BookingController::class, 'show']);

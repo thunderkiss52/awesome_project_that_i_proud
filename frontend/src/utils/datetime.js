@@ -26,5 +26,46 @@ export function toApiDateTime(value) {
     return ''
   }
 
-  return `${value.replace('T', ' ')}:00`
+  return new Date(value).toISOString()
+}
+
+export function nowInputValue() {
+  return toLocalInputValue(new Date())
+}
+
+export function addMinutesToInputValue(value, minutes) {
+  const baseDate = value ? new Date(value) : new Date()
+
+  return toLocalInputValue(new Date(baseDate.getTime() + minutes * 60000))
+}
+
+export function timezoneLabel() {
+  return Intl.DateTimeFormat('ru-RU', {
+    timeZoneName: 'short',
+  })
+    .formatToParts(new Date())
+    .find((part) => part.type === 'timeZoneName')?.value || 'local time'
+}
+
+export function formatDayLabel(value) {
+  if (!value) {
+    return ''
+  }
+
+  return new Intl.DateTimeFormat('ru-RU', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+  }).format(new Date(value))
+}
+
+export function formatTime(value) {
+  if (!value) {
+    return ''
+  }
+
+  return new Intl.DateTimeFormat('ru-RU', {
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(value))
 }

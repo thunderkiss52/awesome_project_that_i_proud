@@ -150,3 +150,34 @@ Response:
 - `POST /auth/register` -> 3 req/min
 - booking mutations -> 20 req/min per user
 - global API -> 60 req/min
+
+## Activity Feed
+
+### `GET /activity`
+
+Returns the latest booking-related events for the current user.
+
+Response:
+
+```json
+{
+  "data": [
+    {
+      "id": 10,
+      "event_type": "booking.rescheduled",
+      "old_value": {
+        "starts_at": "2026-03-20T14:00:00+00:00"
+      },
+      "new_value": {
+        "starts_at": "2026-03-20T16:00:00+00:00"
+      },
+      "created_at": "2026-03-18T09:10:00+00:00",
+      "booking": {
+        "id": 4,
+        "title": "Meeting with client",
+        "status": "active"
+      }
+    }
+  ]
+}
+```

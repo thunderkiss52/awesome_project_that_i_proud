@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Domain\Bookings\Contracts\BookingConflictChecker;
+use App\Domain\Bookings\Contracts\BookingLogRepository;
 use App\Domain\Bookings\Contracts\BookingRepository;
 use App\Domain\Subscriptions\Contracts\SubscriptionQuotaResolver;
 use App\Infrastructure\Persistence\EloquentBookingConflictChecker;
+use App\Infrastructure\Persistence\EloquentBookingLogRepository;
 use App\Infrastructure\Persistence\EloquentBookingRepository;
 use App\Infrastructure\Persistence\EloquentSubscriptionQuotaResolver;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -23,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(BookingRepository::class, EloquentBookingRepository::class);
+        $this->app->bind(BookingLogRepository::class, EloquentBookingLogRepository::class);
         $this->app->bind(BookingConflictChecker::class, EloquentBookingConflictChecker::class);
         $this->app->bind(SubscriptionQuotaResolver::class, EloquentSubscriptionQuotaResolver::class);
     }
