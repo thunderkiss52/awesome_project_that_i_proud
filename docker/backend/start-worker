@@ -19,6 +19,8 @@ chmod -R ug+rwX storage bootstrap/cache
 
 composer install
 
+php artisan rabbitmq:queue-declare "${RABBITMQ_QUEUE:-notifications}" rabbitmq --durable=1 || true
+
 exec php artisan rabbitmq:consume rabbitmq \
   --queue="${RABBITMQ_QUEUE:-notifications}" \
   --sleep=1 \

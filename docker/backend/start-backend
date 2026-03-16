@@ -19,8 +19,14 @@ chmod -R ug+rwX storage bootstrap/cache
 
 composer install
 
-php artisan key:generate --force
-php artisan jwt:secret --force
+if ! grep -Eq '^APP_KEY=.+$' .env; then
+  php artisan key:generate --force
+fi
+
+if ! grep -Eq '^JWT_SECRET=.+$' .env; then
+  php artisan jwt:secret --force
+fi
+
 php artisan migrate --seed --force
 
 exec php-fpm
