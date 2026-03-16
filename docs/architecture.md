@@ -43,7 +43,15 @@
 Each event fans out into:
 
 - activity log persistence
-- notification preparation stub via Laravel log
+- synchronous booking log persistence for the in-app activity feed
+- asynchronous notification preparation through RabbitMQ-backed queued listeners
+
+## Queueing
+
+- queue connection defaults to `rabbitmq` in runtime environments
+- notification listeners are marked with `ShouldQueue` and routed to the `notifications` queue
+- Docker setup runs a dedicated `queue-worker` container with `rabbitmq:consume`
+- tests still use `QUEUE_CONNECTION=sync` to keep the suite deterministic
 
 ## Frontend Structure
 

@@ -125,6 +125,12 @@ Request:
 
 Changes status to `cancelled`, sets `cancelled_at` and dispatches `BookingCancelled`.
 
+## Async Event Processing
+
+Booking activity is persisted synchronously so the API response and activity feed stay consistent.
+
+Notification-oriented listeners are dispatched asynchronously through RabbitMQ on the `notifications` queue.
+
 ## Subscription
 
 ### `GET /subscription`

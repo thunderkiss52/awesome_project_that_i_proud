@@ -12,7 +12,8 @@ RUN apt-get update && apt-get install -y \
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 COPY docker/backend/start-backend /usr/local/bin/start-backend
+COPY docker/backend/start-worker /usr/local/bin/start-worker
 
-RUN chmod +x /usr/local/bin/start-backend
+RUN chmod +x /usr/local/bin/start-backend /usr/local/bin/start-worker
 
 WORKDIR /var/www/html

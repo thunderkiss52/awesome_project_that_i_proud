@@ -8,6 +8,7 @@ The project demonstrates:
 - booking CRUD with ownership rules
 - subscription limits (`basic` and `premium`)
 - Laravel events and listeners
+- queued notification listeners over RabbitMQ
 - activity feed from booking events
 - rate limiting and consistent API errors
 - Vue SPA with Pinia, Vue Router and Axios
@@ -25,6 +26,7 @@ The project demonstrates:
 - Vue Router
 - Axios
 - Docker Compose
+- RabbitMQ
 - PHPUnit
 
 ## Repository Layout
@@ -60,7 +62,7 @@ This keeps controllers thin, business rules centralized and dependencies injecte
   - `BookingCancelled`
   - `BookingRescheduled`
 - Activity logging to `booking_logs`
-- Notification preparation stubs through listeners
+- Notification preparation listeners dispatched asynchronously through RabbitMQ
 - Rate limits:
   - `POST /api/auth/login` -> 5 req/min
   - `POST /api/auth/register` -> 3 req/min
@@ -81,6 +83,8 @@ Services:
 - API: `http://localhost:8080`
 - Frontend: `http://localhost:5173`
 - MySQL: `localhost:3306`
+- RabbitMQ Management UI: `http://localhost:15672`
+- RabbitMQ AMQP stays inside the Docker network on `rabbitmq:5672`
 
 Demo users created by seeder:
 
@@ -99,6 +103,12 @@ php artisan key:generate
 php artisan jwt:secret
 php artisan migrate --seed
 php artisan serve
+```
+
+Run queue worker:
+
+```bash
+php artisan rabbitmq:consume rabbitmq --queue=notifications
 ```
 
 ### Frontend

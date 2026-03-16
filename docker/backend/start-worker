@@ -1,0 +1,26 @@
+#!/bin/sh
+set -eu
+
+cd /var/www/html
+
+if [ ! -f .env ]; then
+  cp .env.example .env
+fi
+
+mkdir -p \
+  storage/logs \
+  storage/framework/cache \
+  storage/framework/sessions \
+  storage/framework/views \
+  bootstrap/cache
+
+chown -R www-data:www-data storage bootstrap/cache
+chmod -R ug+rwX storage bootstrap/cache
+
+composer install
+
+exec php artisan rabbitmq:consume rabbitmq \
+  --queue="${RABBITMQ_QUEUE:-notifications}" \
+  --sleep=1 \
+  --tries=3 \
+  --timeout=90
