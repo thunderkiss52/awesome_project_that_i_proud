@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Events;
+
+use App\Models\Booking;
+use Carbon\CarbonInterface;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+
+class BookingRescheduled
+{
+    use Dispatchable, SerializesModels;
+
+    public function __construct(
+        public Booking $booking,
+        public CarbonInterface $oldStartsAt,
+        public CarbonInterface $oldEndsAt,
+    ) {
+    }
+}
